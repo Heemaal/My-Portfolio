@@ -228,7 +228,7 @@
                             <span>Faridabad, HR, India</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <a href="mailto:heemaaljaglan@gmail.com" class="text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors" aria-label="Send email to Heemaal">
+                            <a href="#" class="mailto-chooser text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors" data-email="heemaaljaglan@gmail.com" aria-label="Send email to Heemaal">
                                 <i class="fa-regular fa-envelope text-accent-color"></i>
                                 <span class="sr-only">Email Heemaal</span>
                             </a>
@@ -877,7 +877,7 @@
 
                     <div class="space-y-4 pt-4">
                         <div class="flex items-center space-x-4">
-                            <a href="mailto:heemaaljaglan@gmail.com" class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex items-center justify-center text-violet-600 dark:text-violet-400 shadow-sm transition-colors hover:bg-violet-50 dark:hover:bg-white/10" aria-label="Send email to Heemaal">
+                            <a href="#" class="mailto-chooser w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex items-center justify-center text-violet-600 dark:text-violet-400 shadow-sm transition-colors hover:bg-violet-50 dark:hover:bg-white/10" data-email="heemaaljaglan@gmail.com" aria-label="Send email to Heemaal">
                                 <i class="fa-solid fa-envelope"></i>
                             </a>
                             <div class="sr-only">
@@ -886,12 +886,12 @@
                         </div>
 
                         <div class="flex items-center space-x-4">
-                            <a href="mailto:heemaaljaglan@gmail.com" class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex items-center justify-center text-violet-600 dark:text-violet-400 shadow-sm transition-colors hover:bg-violet-50 dark:hover:bg-white/10" aria-label="Send email to Heemaal">
+                            <a href="#" class="mailto-chooser w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex items-center justify-center text-violet-600 dark:text-violet-400 shadow-sm transition-colors hover:bg-violet-50 dark:hover:bg-white/10" data-email="heemaaljaglan@gmail.com" aria-label="Send email to Heemaal">
                                 <i class="fa-solid fa-envelope"></i>
                             </a>
                             <div>
                                 <p class="text-[10px] text-slate-500 dark:text-gray-500 uppercase font-bold tracking-wider">Email</p>
-                                <a href="mailto:heemaaljaglan@gmail.com" class="text-slate-800 dark:text-white text-sm font-mono font-semibold hover:text-violet-600 dark:hover:text-violet-400">heemaaljaglan@gmail.com</a>
+                                <a href="#" class="mailto-chooser text-slate-800 dark:text-white text-sm font-mono font-semibold hover:text-violet-600 dark:hover:text-violet-400" data-email="heemaaljaglan@gmail.com">heemaaljaglan@gmail.com</a>
                             </div>
                         </div>
 
@@ -907,33 +907,9 @@
                     </div>
                 </div>
 
-                <!-- Interactive Form -->
+                <!-- Contact form removed — contact via email only -->
                 <div class="lg:col-span-7">
-                    <form id="contact-form" class="p-8 rounded-2xl bg-white/80 dark:bg-slate-900/65 border border-slate-200 dark:border-white/5 glass-card space-y-6 shadow-sm dark:shadow-none">
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label for="name" class="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase">Your Name</label>
-                                <input type="text" id="name" required class="w-full px-4 py-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-violet-500 transition-colors font-sans text-sm shadow-inner" placeholder="John Doe">
-                            </div>
-                            <div class="space-y-2">
-                                <label for="email" class="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase">Your Email</label>
-                                <input type="email" id="email" required class="w-full px-4 py-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-violet-500 transition-colors font-sans text-sm shadow-inner" placeholder="johndoe@example.com">
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <label for="subject" class="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase">Subject</label>
-                            <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-violet-500 transition-colors font-sans text-sm shadow-inner" placeholder="Discussion on Opportunities">
-                        </div>
-                        <div class="space-y-2">
-                            <label for="message" class="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase">Message</label>
-                            <textarea id="message" rows="4" required class="w-full px-4 py-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-violet-500 transition-colors font-sans text-sm shadow-inner" placeholder="Tell me about your project or career opening..."></textarea>
-                        </div>
-                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-violet-600/20 hover:scale-[1.01]">
-                            <i class="fa-regular fa-paper-plane"></i>
-                            <span>Send Message</span>
-                        </button>
-                    </form>
-                    <div id="form-feedback" class="hidden mt-4 p-4 rounded-xl text-center font-medium font-mono text-xs shadow-sm"></div>
+                    <p class="text-slate-600 dark:text-gray-400">I prefer to handle inquiries via email. Click the envelope icon to select your mailer (Gmail, Outlook, or default mail app).</p>
                 </div>
             </div>
         </div>
@@ -946,7 +922,7 @@
                 &copy; <span id="year">2026</span> Heemaal Jaglan. All Rights Reserved.
             </p>
             <div class="flex items-center space-x-6">
-                <a href="mailto:heemaaljaglan@gmail.com" class="text-slate-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white text-lg transition-colors" aria-label="Mail Heemaal"><i class="fa-regular fa-envelope"></i></a>
+                <a href="#" class="mailto-chooser text-slate-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white text-lg transition-colors" data-email="heemaaljaglan@gmail.com" aria-label="Mail Heemaal"><i class="fa-regular fa-envelope"></i></a>
                 <a href="https://www.linkedin.com/in/heemaal-jaglan-144bb225b/" target="_blank" class="text-slate-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white text-lg transition-colors" aria-label="LinkedIn profile"><i class="fa-brands fa-linkedin animate-pulse"></i></a>
                 <a href="https://github.com/Heemaal" target="_blank" class="text-slate-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white text-lg transition-colors" aria-label="GitHub profile"><i class="fa-brands fa-github"></i></a>
             </div>

@@ -407,15 +407,71 @@ function typeEffect() {
     }
 }
 
-const contactForm = document.getElementById('contact-form');
-const formFeedback = document.getElementById('form-feedback');
 
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    formFeedback.classList.remove('hidden', 'bg-red-500/10', 'text-red-600', 'text-red-400', 'bg-emerald-500/10', 'text-emerald-600', 'dark:text-emerald-400');
-    formFeedback.classList.add('bg-emerald-100', 'dark:bg-emerald-500/10', 'text-emerald-700', 'dark:text-emerald-400');
-    formFeedback.textContent = "SUCCESS: Your message was successfully dispatched! I will get back to you shortly.";
-    contactForm.reset();
+// Mail chooser: open Gmail, Outlook, or default mail app
+function removeMailChooser() {
+    const existing = document.getElementById('mail-chooser-popup');
+    if (existing) existing.remove();
+}
+
+function createMailChooser(email, x, y) {
+    removeMailChooser();
+    const popup = document.createElement('div');
+    popup.id = 'mail-chooser-popup';
+    popup.style.position = 'absolute';
+    popup.style.left = `${x}px`;
+    popup.style.top = `${y}px`;
+    popup.style.zIndex = 9999;
+    popup.style.background = getComputedStyle(document.body).classList.contains('dark') ? '#0b1220' : '#fff';
+    popup.style.color = getComputedStyle(document.body).classList.contains('dark') ? '#cbd5e1' : '#0f172a';
+    popup.style.border = '1px solid rgba(0,0,0,0.06)';
+    popup.style.padding = '8px';
+    popup.style.borderRadius = '8px';
+    popup.style.boxShadow = '0 6px 18px rgba(2,6,23,0.2)';
+    popup.innerHTML = `
+        <div style="display:flex;gap:8px;align-items:center;">
+            <button data-provider="gmail" style="padding:6px 10px;border-radius:6px;border:none;cursor:pointer;background:#1a73e8;color:#fff;font-weight:600">Gmail</button>
+            <button data-provider="outlook" style="padding:6px 10px;border-radius:6px;border:none;cursor:pointer;background:#0072c6;color:#fff;font-weight:600">Outlook</button>
+            <button data-provider="default" style="padding:6px 10px;border-radius:6px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;background:transparent;color:inherit">Default Mail App</button>
+        </div>
+        <div style="font-size:11px;margin-top:6px;color:inherit;opacity:0.85">To: ${email}</div>
+    `;
+
+    document.body.appendChild(popup);
+
+    popup.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('button[data-provider]');
+        if (!btn) return;
+        const provider = btn.getAttribute('data-provider');
+        if (provider === 'gmail') {
+            window.open(`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(email)}`,'_blank');
+        } else if (provider === 'outlook') {
+            window.open(`https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(email)}`,'_blank');
+        } else {
+            window.location.href = `mailto:${email}`;
+        }
+        removeMailChooser();
+    });
+
+    // close on any click outside
+    setTimeout(() => {
+        window.addEventListener('click', function handler(e) {
+            if (!popup.contains(e.target)) {
+                removeMailChooser();
+                window.removeEventListener('click', handler);
+            }
+        });
+    }, 0);
+}
+
+document.querySelectorAll('.mailto-chooser').forEach(el => {
+    el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const email = el.dataset.email || 'heemaaljaglan@gmail.com';
+        const x = e.pageX + 8;
+        const y = e.pageY + 8;
+        createMailChooser(email, x, y);
+    });
 });
 
 window.onload = function() {
