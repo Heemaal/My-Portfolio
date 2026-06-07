@@ -22,14 +22,14 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #f6f6f6;
+      --bg: #ffffff;
       --surface: #ffffff;
-      --text: #0f172a;
-      --muted: #475569;
-      --accent: #8b5cf6;
-      --accent-soft: rgba(139, 92, 246, 0.12);
-      --border: rgba(15, 23, 42, 0.08);
-      --shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
+      --text: #2e0f1f;
+      --muted: #6e4b56;
+      --accent: #7b1124;
+      --accent-soft: rgba(123, 17, 36, 0.12);
+      --border: rgba(123, 17, 36, 0.12);
+      --shadow: 0 24px 45px rgba(123, 17, 36, 0.12);
     }
 
     * {
@@ -44,7 +44,7 @@
       margin: 0;
       min-height: 100vh;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(180deg, #f8f7ff 0%, #f6f6f6 100%);
+      background: linear-gradient(180deg, #fff8f8 0%, #f7f2f4 100%);
       color: var(--text);
       overflow-x: hidden;
     }
@@ -81,7 +81,7 @@
       left: -8%;
       width: 60vw;
       height: 60vw;
-      background: radial-gradient(circle at center, rgba(139, 92, 246, 0.18), transparent 52%);
+      background: radial-gradient(circle at center, rgba(123, 17, 36, 0.18), transparent 52%);
       filter: blur(110px);
     }
 
@@ -90,7 +90,7 @@
       bottom: -12%;
       width: 50vw;
       height: 50vw;
-      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.16), transparent 52%);
+      background: radial-gradient(circle at center, rgba(123, 17, 36, 0.12), transparent 52%);
       filter: blur(90px);
     }
 
@@ -99,7 +99,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      padding: 1.5rem 2rem;
+      padding: 1.2rem 1.5rem;
       position: relative;
       z-index: 1;
     }
@@ -134,7 +134,7 @@
       z-index: 1;
       max-width: 1300px;
       margin: 0 auto;
-      padding: 3rem 2rem 5rem;
+      padding: 2.5rem 1.5rem 3rem;
     }
 
     .grid {
@@ -165,7 +165,7 @@
       font-size: 0.78rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
     }
 
     .label-pill i {
@@ -213,7 +213,7 @@
     .cta-primary {
       background: var(--accent);
       color: #fff;
-      box-shadow: 0 18px 30px rgba(139, 92, 246, 0.22);
+      box-shadow: 0 18px 30px rgba(123, 17, 36, 0.24);
     }
 
     .cta-secondary {
@@ -230,8 +230,8 @@
     .hero-stats {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-      margin-top: 2.5rem;
+      gap: 0.95rem;
+      margin-top: 1.8rem;
     }
 
     .stat-card {
@@ -257,9 +257,9 @@
 
     .hero-visual {
       position: relative;
-      padding: 2rem;
+      padding: 1.8rem;
       border-radius: 32px;
-      background: rgba(255, 255, 255, 0.9);
+      background: #fff;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       overflow: hidden;
@@ -272,7 +272,7 @@
       right: -6%;
       width: 24rem;
       height: 24rem;
-      background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15), transparent 52%);
+      background: radial-gradient(circle at center, rgba(123, 17, 36, 0.16), transparent 52%);
       filter: blur(80px);
       pointer-events: none;
     }
@@ -281,11 +281,11 @@
       position: relative;
       padding: 1.75rem;
       border-radius: 28px;
-      background: #0f172a;
+      background: #7b1124;
       color: #fff;
       overflow: hidden;
       z-index: 1;
-      box-shadow: 0 32px 50px rgba(15, 23, 42, 0.18);
+      box-shadow: 0 28px 40px rgba(123, 17, 36, 0.18);
     }
 
     .card-panel::before {
@@ -307,7 +307,7 @@
 
     .card-panel p {
       margin: 0.85rem 0 0;
-      color: rgba(255, 255, 255, 0.78);
+      color: rgba(255, 255, 255, 0.82);
       line-height: 1.75;
       font-size: 0.95rem;
     }
@@ -343,7 +343,7 @@
     }
 
     .section {
-      padding: 5rem 2rem;
+      padding: 3.8rem 1.5rem;
       position: relative;
       z-index: 1;
     }
@@ -364,8 +364,8 @@
 
     .card-grid {
       display: grid;
-      gap: 1.4rem;
-      margin-top: 2rem;
+      gap: 1.2rem;
+      margin-top: 1.6rem;
     }
 
     @media (min-width: 768px) {
@@ -376,9 +376,9 @@
 
     .card {
       background: #fff;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(123, 17, 36, 0.08);
       border-radius: 24px;
-      padding: 1.6rem;
+      padding: 1.3rem;
       box-shadow: var(--shadow);
       transition: transform 0.2s ease;
     }
@@ -410,16 +410,16 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      padding: 1.4rem 1.6rem;
+      padding: 1.2rem 1.4rem;
       border-radius: 24px;
-      background: rgba(139, 92, 246, 0.08);
-      border: 1px solid transparent;
+      background: rgba(123, 17, 36, 0.08);
+      border: 1px solid rgba(123, 17, 36, 0.08);
       transition: transform 0.2s ease, background-color 0.2s ease;
     }
 
     .contact-card:hover {
       transform: translateY(-2px);
-      background: rgba(139, 92, 246, 0.12);
+      background: rgba(123, 17, 36, 0.14);
     }
 
     .contact-card i {
