@@ -92,6 +92,7 @@
       height: 50vw;
       background: radial-gradient(circle at center, rgba(123, 17, 36, 0.12), transparent 52%);
       filter: blur(90px);
+      will-change: transform;
     }
 
     .topbar {
@@ -125,8 +126,20 @@
       transition: color 0.2s ease;
     }
 
-    .navlinks a:hover {
+    .navlinks a:hover,
+    .navlinks a.active {
       color: var(--accent);
+    }
+
+    .navlinks a.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -0.35rem;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 999px;
     }
 
     .hero {
@@ -498,10 +511,10 @@
             <a href="#contact" class="cta-secondary"><i class="fa-solid fa-paper-plane"></i> Email Me</a>
           </div>
           <div class="hero-stats">
-            <div class="stat-card"><strong>1</strong><span>Published patent</span></div>
-            <div class="stat-card"><strong>4</strong><span>Research papers</span></div>
-            <div class="stat-card"><strong>5+</strong><span>Industry roles</span></div>
-            <div class="stat-card"><strong>8.34</strong><span>CGPA in B.E. CS</span></div>
+            <div class="stat-card"><strong data-target="1" data-duration="800">0</strong><span>Published patent</span></div>
+            <div class="stat-card"><strong data-target="4" data-duration="800">0</strong><span>Research papers</span></div>
+            <div class="stat-card"><strong data-target="5" data-duration="800" data-suffix="+">0+</strong><span>Industry roles</span></div>
+            <div class="stat-card"><strong data-target="8.34" data-duration="1000" data-decimals="2">0.00</strong><span>CGPA in B.E. CS</span></div>
           </div>
         </div>
         <aside class="hero-visual">
@@ -641,12 +654,66 @@
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'none';
+
+          const counter = entry.target.querySelector('[data-target]');
+          if (counter && !counter.dataset.animated) {
+            const target = parseFloat(counter.dataset.target);
+            const duration = parseInt(counter.dataset.duration, 10) || 800;
+            const decimals = parseInt(counter.dataset.decimals, 10) || 0;
+            let start = 0;
+            const startTime = performance.now();
+            const sign = target < 0 ? -1 : 1;
+            const absTarget = Math.abs(target);
+
+            const suffix = counter.dataset.suffix || '';
+            function animateCount(time) {
+              const elapsed = Math.min(time - startTime, duration);
+              const progress = elapsed / duration;
+              const value = absTarget * progress;
+              counter.textContent = (sign * value).toFixed(decimals) + suffix;
+              if (elapsed < duration) {
+                requestAnimationFrame(animateCount);
+              } else {
+                counter.textContent = target.toFixed(decimals) + suffix;
+              }
+            }
+
+            counter.dataset.animated = 'true';
+            requestAnimationFrame(animateCount);
+          }
+
           observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.15 });
 
     animatedElements.forEach((el) => observer.observe(el));
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navlinks a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          navLinks.forEach((link) => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach((section) => navObserver.observe(section));
+
+    const pageShell = document.querySelector('.page-shell');
+    pageShell.addEventListener('mousemove', (event) => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 20;
+      const y = (event.clientY / window.innerHeight - 0.5) * 20;
+      pageShell.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    });
+
+    pageShell.addEventListener('mouseleave', () => {
+      pageShell.style.transform = 'translate3d(0, 0, 0)';
+    });
   </script>
 </body>
 </html>
