@@ -418,23 +418,16 @@ function createMailChooser(email, x, y) {
     removeMailChooser();
     const popup = document.createElement('div');
     popup.id = 'mail-chooser-popup';
-    popup.style.position = 'absolute';
+    popup.className = 'absolute z-50 p-2 rounded-lg shadow-lg border bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-200';
     popup.style.left = `${x}px`;
     popup.style.top = `${y}px`;
-    popup.style.zIndex = 9999;
-    popup.style.background = getComputedStyle(document.body).classList.contains('dark') ? '#0b1220' : '#fff';
-    popup.style.color = getComputedStyle(document.body).classList.contains('dark') ? '#cbd5e1' : '#0f172a';
-    popup.style.border = '1px solid rgba(0,0,0,0.06)';
-    popup.style.padding = '8px';
-    popup.style.borderRadius = '8px';
-    popup.style.boxShadow = '0 6px 18px rgba(2,6,23,0.2)';
     popup.innerHTML = `
-        <div style="display:flex;gap:8px;align-items:center;">
-            <button data-provider="gmail" style="padding:6px 10px;border-radius:6px;border:none;cursor:pointer;background:#1a73e8;color:#fff;font-weight:600">Gmail</button>
-            <button data-provider="outlook" style="padding:6px 10px;border-radius:6px;border:none;cursor:pointer;background:#0072c6;color:#fff;font-weight:600">Outlook</button>
-            <button data-provider="default" style="padding:6px 10px;border-radius:6px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;background:transparent;color:inherit">Default Mail App</button>
+        <div class="flex gap-2">
+            <button data-provider="gmail" class="px-3 py-1 rounded bg-blue-600 text-white font-semibold">Gmail</button>
+            <button data-provider="outlook" class="px-3 py-1 rounded bg-sky-600 text-white font-semibold">Outlook</button>
+            <button data-provider="default" class="px-3 py-1 rounded border">Default Mail App</button>
         </div>
-        <div style="font-size:11px;margin-top:6px;color:inherit;opacity:0.85">To: ${email}</div>
+        <div class="text-xs mt-2 opacity-80">To: ${email}</div>
     `;
 
     document.body.appendChild(popup);
