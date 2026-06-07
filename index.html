@@ -387,6 +387,126 @@
       }
     }
 
+    .timeline {
+      position: relative;
+      padding-left: 2.4rem;
+      margin-top: 1.6rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 1rem;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, rgba(123, 17, 36, 0.15), rgba(123, 17, 36, 0.45));
+      border-radius: 999px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      padding: 1.2rem 1.6rem 1.6rem 2.4rem;
+      background: #fff;
+      border: 1px solid rgba(123, 17, 36, 0.08);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-marker {
+      position: absolute;
+      left: -0.25rem;
+      top: 1.4rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 0 6px rgba(123, 17, 36, 0.08);
+    }
+
+    .timeline-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: baseline;
+      margin-bottom: 0.8rem;
+    }
+
+    .timeline-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .timeline-header span {
+      display: inline-flex;
+      color: var(--muted);
+      font-size: 0.92rem;
+      background: rgba(123, 17, 36, 0.06);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .timeline-date {
+      margin: 0.25rem 0 1rem;
+      color: var(--accent);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .timeline-item p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .timeline-graph {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .graph-row {
+      display: grid;
+      grid-template-columns: 1fr 2.3fr;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .graph-row span {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .graph-bar {
+      position: relative;
+      height: 0.8rem;
+      border-radius: 999px;
+      background: rgba(123, 17, 36, 0.08);
+      overflow: hidden;
+    }
+
+    .graph-bar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent), rgba(123, 17, 36, 0.8));
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.8s ease;
+    }
+
+    .graph-bar[data-fill]::after {
+      transform: scaleX(calc(var(--fill) / 100));
+    }
+
     .card {
       background: #fff;
       border: 1px solid rgba(123, 17, 36, 0.08);
@@ -539,26 +659,65 @@
 
     <section id="experience" class="section">
       <h2>Experience</h2>
-      <div class="card-grid">
-        <div class="card">
-          <h3>Jr. Data Analyst</h3>
-          <p>E-Control Devices Pvt Ltd · May 2025 - Present</p>
-          <p>Analyzed sales, HR, and thermal solutions datasets to identify performance patterns, built visual reports, and supported cross-functional teams with timely insights.</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-header">
+            <h3>Jr. Data Analyst</h3>
+            <span>E-Control Devices Pvt Ltd</span>
+          </div>
+          <p class="timeline-date">May 2025 - Present</p>
+          <p>Analyzed sales, HR, and thermal solutions data to identify performance patterns, build visual dashboards, and support cross-functional teams with timely operational insights.</p>
+          <div class="timeline-graph">
+            <div class="graph-row"><span>Analytics</span><div class="graph-bar" style="--fill: 95%"></div></div>
+            <div class="graph-row"><span>Reporting</span><div class="graph-bar" style="--fill: 88%"></div></div>
+            <div class="graph-row"><span>Automation</span><div class="graph-bar" style="--fill: 80%"></div></div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Business Analyst & Big Data Intern</h3>
-          <p>LG Electronics · July 2025 - Oct 2025</p>
-          <p>Developed a names-based gender prediction model, cleaned and transformed datasets, and documented findings for analytics review meetings.</p>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-header">
+            <h3>Business Analyst & Big Data Intern</h3>
+            <span>LG Electronics</span>
+          </div>
+          <p class="timeline-date">July 2025 - Oct 2025</p>
+          <p>Designed a names-based gender prediction model, prepared datasets for advanced analytics, and shared findings in stakeholder-ready presentations.</p>
+          <div class="timeline-graph">
+            <div class="graph-row"><span>Data Modeling</span><div class="graph-bar" style="--fill: 90%"></div></div>
+            <div class="graph-row"><span>Insight Delivery</span><div class="graph-bar" style="--fill: 85%"></div></div>
+            <div class="graph-row"><span>Data QA</span><div class="graph-bar" style="--fill: 78%"></div></div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Senior Head of Department (Data Analyst Intern)</h3>
-          <p>Renu Sharma Healthcare and Education Foundation · Jan 2025 - Apr 2025</p>
-          <p>Led analytics workflows, developed Power BI and Matplotlib dashboards, and applied ML models to predict outcomes for health and education programs.</p>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-header">
+            <h3>Senior Head of Department (Data Analyst Intern)</h3>
+            <span>Renu Sharma Healthcare and Education Foundation</span>
+          </div>
+          <p class="timeline-date">Jan 2025 - Apr 2025</p>
+          <p>Led analytics workflows for health and education programs, building Power BI dashboards and Matplotlib reports to track outcomes and resource impact.</p>
+          <div class="timeline-graph">
+            <div class="graph-row"><span>Visualization</span><div class="graph-bar" style="--fill: 92%"></div></div>
+            <div class="graph-row"><span>Strategy</span><div class="graph-bar" style="--fill: 84%"></div></div>
+            <div class="graph-row"><span>Prediction</span><div class="graph-bar" style="--fill: 75%"></div></div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Financial Analyst Intern</h3>
-          <p>My F&O School · Dec 2023 - Jan 2024</p>
-          <p>Conducted in-depth analysis of options and derivatives, used Excel and Python to assess risk, and created dashboards for investment insights.</p>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-header">
+            <h3>Financial Analyst Intern</h3>
+            <span>My F&O School</span>
+          </div>
+          <p class="timeline-date">Dec 2023 - Jan 2024</p>
+          <p>Conducted options and derivatives analysis, used Excel and Python for risk assessment, and created dashboards to translate market behavior into actionable investment guidance.</p>
+          <div class="timeline-graph">
+            <div class="graph-row"><span>Risk Analysis</span><div class="graph-bar" style="--fill: 90%"></div></div>
+            <div class="graph-row"><span>Dashboarding</span><div class="graph-bar" style="--fill: 82%"></div></div>
+            <div class="graph-row"><span>Trading Insight</span><div class="graph-bar" style="--fill: 72%"></div></div>
+          </div>
         </div>
       </div>
     </section>
