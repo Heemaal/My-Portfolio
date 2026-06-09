@@ -469,8 +469,7 @@ document.querySelectorAll('.mailto-chooser').forEach(el => {
 
 // Certificates viewer (dynamic)
 let certificateFiles = [
-    { src: 'Certificates/a.html', title: 'Certificate A' }
-    // Fallback list; will be replaced by fetching Certificates/index.json when available
+    // fallback list (empty) — will be replaced by fetching Certificates/index.json
 ];
 
 async function loadCertificatesIndex() {
