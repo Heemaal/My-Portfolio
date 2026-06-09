@@ -467,9 +467,110 @@ document.querySelectorAll('.mailto-chooser').forEach(el => {
     });
 });
 
+// Certificates viewer (dynamic)
+let certificateFiles = [
+    { src: 'Certificates/a.html', title: 'Certificate A' }
+    // Fallback list; will be replaced by fetching Certificates/index.json when available
+];
+
+async function loadCertificatesIndex() {
+    try {
+        const res = await fetch('Certificates/index.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('Index fetch failed');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length) {
+            certificateFiles = data;
+        }
+    } catch (err) {
+        // keep fallback list
+        console.warn('Could not load Certificates/index.json — using fallback', err);
+    }
+}
+
+function renderCertificates() {
+    const grid = document.getElementById('certificates-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    certificateFiles.forEach((c) => {
+        const ext = (c.src.split('.').pop() || '').toLowerCase();
+        const card = document.createElement('button');
+        card.className = 'group overflow-hidden rounded-xl border border-slate-200 dark:border-white/5 bg-white/90 dark:bg-slate-800/60 hover:shadow-lg transition';
+        card.setAttribute('data-src', c.src);
+        card.setAttribute('aria-label', 'Open certificate ' + c.title);
+
+        let previewHtml = '';
+        if (['png','jpg','jpeg','svg'].includes(ext)) {
+            previewHtml = `<img src="${c.src}" alt="${c.title}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform" loading="lazy">`;
+        } else if (ext === 'html') {
+            previewHtml = `<iframe src="${c.src}" class="w-full h-40 border-0" sandbox="allow-same-origin allow-scripts"></iframe>`;
+        } else if (ext === 'pdf') {
+            previewHtml = `<div class="w-full h-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-gray-300 text-sm"><i class="fa-solid fa-file-pdf text-3xl text-red-500 mr-3"></i><span class="max-w-[60%] truncate">${c.title}</span></div>`;
+        } else {
+            previewHtml = `<div class="w-full h-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-gray-300 text-sm"><i class="fa-solid fa-certificate text-3xl text-violet-600 mr-3"></i><span class="max-w-[60%] truncate">${c.title}</span></div>`;
+        }
+
+        card.innerHTML = `
+            <div class="w-full">${previewHtml}</div>
+            <div class="p-3 flex items-center justify-between">
+                <div>
+                    <div class="font-semibold text-sm text-slate-900 dark:text-white">${c.title}</div>
+                    <div class="text-xs text-slate-500 dark:text-gray-400">Click to open full view</div>
+                </div>
+                <div class="text-xs text-slate-400 dark:text-gray-500">Open</div>
+            </div>
+        `;
+        card.addEventListener('click', () => openCertificate(c.src, c.title));
+        grid.appendChild(card);
+    });
+}
+
+function openCertificate(src) {
+    const modal = document.getElementById('certificate-modal');
+    const iframe = document.getElementById('certificate-iframe');
+    if (!modal || !iframe) return;
+    iframe.src = src;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCertificate() {
+    const modal = document.getElementById('certificate-modal');
+    const iframe = document.getElementById('certificate-iframe');
+    if (!modal || !iframe) return;
+    iframe.src = '';
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+
+function setupCertificateHandlers() {
+    document.addEventListener('click', (e) => {
+        const closeBtn = e.target.closest('#certificate-close');
+        if (closeBtn) {
+            closeCertificate();
+            return;
+        }
+
+        // close when clicking backdrop
+        if (e.target && e.target.id === 'certificate-modal') {
+            closeCertificate();
+        }
+    });
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeCertificate();
+    });
+}
+
 window.onload = function() {
     initSavedTheme();
     renderHeroChart('Python');
     runSandboxQuery();
     typeEffect();
+    // Certificates: try to load index.json then render
+    loadCertificatesIndex().then(() => {
+        renderCertificates();
+        setupCertificateHandlers();
+    });
 };

@@ -365,6 +365,31 @@
         </div>
     </section>
 
+    <!-- Certificates Section -->
+    <section id="certificates" class="py-20 border-t border-slate-200 dark:border-white/5 bg-white/50 dark:bg-slate-900/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h2 class="text-3xl sm:text-4xl font-space font-bold text-slate-900 dark:text-white mb-2">Certificates</h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-gray-400">Click a certificate to view it. Use the close button or Esc to dismiss.</p>
+                <div class="h-1 w-16 bg-gradient-to-r from-violet-500 to-indigo-500 mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <div id="certificates-grid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Dynamically populated certificate cards -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4">
+        <div class="relative w-full max-w-5xl h-[80vh] bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl">
+            <button id="certificate-close" class="absolute top-3 right-3 z-60 px-3 py-2 rounded-md bg-white/80 dark:bg-slate-800/80 hover:scale-105 transition-transform border border-slate-200 dark:border-white/10">
+                <i class="fa-solid fa-xmark"></i> Close
+            </button>
+            <iframe id="certificate-iframe" src="" class="w-full h-full border-0"></iframe>
+        </div>
+    </div>
+
     <!-- Interactive Skills Section -->
     <section id="skills" class="py-20 border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-brand-dark/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
