@@ -524,43 +524,186 @@ function renderCertificates() {
     });
 }
 
-function openCertificate(src) {
+// Certificate viewer: zoom & pan state
+let certZoom = 1;
+let certMinZoom = 0.5;
+let certMaxZoom = 4;
+let certPanX = 0;
+let certPanY = 0;
+let certIsPanning = false;
+let certStartX = 0;
+let certStartY = 0;
+let certTouchStartDist = 0;
+let certTouchStartZoom = 1;
+
+function applyCertTransform() {
+    const content = document.getElementById('certificate-viewer-content');
+    if (!content) return;
+    // keep center translate and apply pan and scale
+    content.style.transform = `translate(-50%, -50%) translate(${certPanX}px, ${certPanY}px) scale(${certZoom})`;
+}
+
+function setCertZoom(z) {
+    certZoom = Math.max(certMinZoom, Math.min(certMaxZoom, z));
+    const val = document.getElementById('cert-zoom-val');
+    if (val) val.textContent = Math.round(certZoom * 100) + '%';
+    applyCertTransform();
+}
+
+function zoomIn() { setCertZoom(certZoom + 0.2); }
+function zoomOut() { setCertZoom(certZoom - 0.2); }
+function resetCertView() { certZoom = 1; certPanX = 0; certPanY = 0; setCertZoom(1); }
+function fitCertView() { certPanX = 0; certPanY = 0; setCertZoom(1); }
+
+function openCertificate(src, title) {
     const modal = document.getElementById('certificate-modal');
-    const iframe = document.getElementById('certificate-iframe');
-    if (!modal || !iframe) return;
-    iframe.src = src;
+    const viewerContent = document.getElementById('certificate-viewer-content');
+    const titleEl = document.getElementById('certificate-title');
+    if (!modal || !viewerContent) return;
+    viewerContent.innerHTML = '';
+    titleEl && (titleEl.textContent = title || 'Certificate');
+
+    const ext = (src.split('.').pop() || '').toLowerCase();
+    let el;
+    if (['png','jpg','jpeg','svg'].includes(ext)) {
+        el = document.createElement('img');
+        el.src = src;
+        el.alt = title || '';
+        el.style.display = 'block';
+        el.style.maxWidth = 'none';
+        el.style.maxHeight = 'none';
+    } else if (ext === 'html') {
+        el = document.createElement('iframe');
+        el.src = src;
+        el.style.border = '0';
+        el.setAttribute('sandbox','allow-same-origin allow-scripts');
+        el.style.width = '100%';
+        el.style.height = '100%';
+    } else {
+        // fallback: embed PDF or file in iframe/object
+        el = document.createElement('iframe');
+        el.src = src;
+        el.style.border = '0';
+        el.style.width = '100%';
+        el.style.height = '100%';
+    }
+
+    el.className = 'certificate-content-element';
+    el.style.willChange = 'transform';
+    el.style.pointerEvents = 'auto';
+    // ensure the content has a sensible size to start with
+    el.style.maxWidth = '1200px';
+    el.style.maxHeight = '1200px';
+    viewerContent.appendChild(el);
+
+    // reset zoom/pan
+    certZoom = 1; certPanX = 0; certPanY = 0;
+    setCertZoom(1);
+
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
+
+    // set cursor
+    viewerContent.style.cursor = 'grab';
 }
 
 function closeCertificate() {
     const modal = document.getElementById('certificate-modal');
-    const iframe = document.getElementById('certificate-iframe');
-    if (!modal || !iframe) return;
-    iframe.src = '';
+    const viewerContent = document.getElementById('certificate-viewer-content');
+    if (!modal || !viewerContent) return;
+    viewerContent.innerHTML = '';
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     document.body.style.overflow = '';
 }
 
 function setupCertificateHandlers() {
+    // close handlers
     document.addEventListener('click', (e) => {
         const closeBtn = e.target.closest('#certificate-close');
-        if (closeBtn) {
-            closeCertificate();
-            return;
-        }
+        if (closeBtn) { closeCertificate(); return; }
+        if (e.target && e.target.id === 'certificate-modal') { closeCertificate(); }
+    });
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCertificate(); });
 
-        // close when clicking backdrop
-        if (e.target && e.target.id === 'certificate-modal') {
-            closeCertificate();
-        }
+    // toolbar
+    const zin = document.getElementById('cert-zoom-in');
+    const zout = document.getElementById('cert-zoom-out');
+    const fit = document.getElementById('cert-fit');
+    const reset = document.getElementById('cert-reset');
+    zin && zin.addEventListener('click', zoomIn);
+    zout && zout.addEventListener('click', zoomOut);
+    fit && fit.addEventListener('click', fitCertView);
+    reset && reset.addEventListener('click', resetCertView);
+
+    // pan & wheel & touch handlers on viewer
+    const viewer = document.getElementById('certificate-viewer');
+    const content = document.getElementById('certificate-viewer-content');
+    if (!viewer || !content) return;
+
+    // mouse pan
+    viewer.addEventListener('mousedown', (e) => {
+        certIsPanning = true;
+        certStartX = e.clientX;
+        certStartY = e.clientY;
+        viewer.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mouseup', () => { certIsPanning = false; if (viewer) viewer.style.cursor = 'default'; });
+    window.addEventListener('mousemove', (e) => {
+        if (!certIsPanning) return;
+        const dx = e.clientX - certStartX;
+        const dy = e.clientY - certStartY;
+        certStartX = e.clientX; certStartY = e.clientY;
+        certPanX += dx;
+        certPanY += dy;
+        applyCertTransform();
     });
 
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeCertificate();
-    });
+    // wheel to zoom
+    viewer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = -e.deltaY;
+        const factor = delta > 0 ? 1.08 : 0.92;
+        const rect = content.getBoundingClientRect();
+        // optional: zoom toward cursor (not implemented fully)
+        setCertZoom(certZoom * factor);
+    }, { passive: false });
+
+    // touch: pinch to zoom and single-finger pan
+    viewer.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            certTouchStartDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            certTouchStartZoom = certZoom;
+        } else if (e.touches.length === 1) {
+            certIsPanning = true;
+            certStartX = e.touches[0].clientX;
+            certStartY = e.touches[0].clientY;
+        }
+    }, { passive: true });
+
+    viewer.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2) {
+            const d = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const ratio = d / (certTouchStartDist || d);
+            setCertZoom(certTouchStartZoom * ratio);
+        } else if (e.touches.length === 1 && certIsPanning) {
+            const dx = e.touches[0].clientX - certStartX;
+            const dy = e.touches[0].clientY - certStartY;
+            certStartX = e.touches[0].clientX;
+            certStartY = e.touches[0].clientY;
+            certPanX += dx; certPanY += dy;
+            applyCertTransform();
+        }
+    }, { passive: true });
+
+    viewer.addEventListener('touchend', (e) => { if (e.touches.length === 0) certIsPanning = false; }, { passive: true });
 }
 
 window.onload = function() {
